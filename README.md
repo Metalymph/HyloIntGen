@@ -2,7 +2,11 @@
 
 Generator for Hylo programming language integer types.
 
+#### Example
+
 ```swift
+import HyloIntGen
+
 // Generate the integer familly you want as Dictionary<String: String>
 let contentDict = HyloIntGen()
 let allIntTypesDict = contentDict.all()
