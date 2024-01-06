@@ -20,19 +20,17 @@ final class HyloIntGenTests: XCTestCase {
     XCTAssertEqual(genData, readFile)
   }
 
-  func testAll() async throws {
-    for entry in HyloIntGen().all() {
+  func testBuildDebug() async throws {
+    for entry in HyloIntGen().build(persist: false) {
       print("Testing \(entry.key)...")
       let readFile = try await readIntTypeFile(path: "./Templates/\(entry.key).hylo")
       XCTAssertEqual(entry.value, readFile)
     }
   }
 
-  func testWrite() async throws {
-    let generator = HyloIntGen()
-    let genData = generator.all()
-    
-    try generator.write(path: "./Generated")
+  func testBuildWrite() async throws {
+    let generator = HyloIntGen(pathToWrite: "./Generated")
+    let genData = generator.build(persist: true)
     for entry in genData {
         let oldIntTypeFile = try await readIntTypeFile(path: "./Templates/\(entry.key).hylo")
         let newIntTypeFile = try await readIntTypeFile(path: "./Generated/\(entry.key).hylo")

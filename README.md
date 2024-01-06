@@ -7,22 +7,24 @@ Generator for Hylo programming language integer types.
 ```swift
 import HyloIntGen
 
-// Generate the integer familly you want as Dictionary<String: String>
-let contentDict = HyloIntGen()
-let allIntTypesDict = contentDict.all()
-let onlySignedInts = contentDict().signed()
-let onlyUnsignedInts = contentDict().unsigned()
-
+public func main() {
+  guard let gen = HyloIntGen(writeToPath: "${HYLO_PATH}/StandardLibrary/Sources/Core/Numbers/Integers/") else {
+  print("Could not use \(writeToPath) as current path.")
+return
+}
+//build content of all Hylo integer types (useful for debugging). No write on filesystem by default.
+let allIntTypesDict = try! gen.build()!
 //  iter over generated content which represent tthe several integer types
 for entry in allIntTypesDict {
-    print("Type: \(entry.key) - File string content:\n\n \(entry.value)\n")
+  print("Type: \(entry.key) - File string content:\n\n \(entry.value)\n")
 }
 
-// write the content generated to a file for each Hylo integer type
-do { 
-    try contentDict.write() {
-} catch {
-    print(error.localizedDescription)
+//build content of all Hylo unsigned integer types writing on filesystem.
+//Avoids data caching consuming it, so is useless to wait for an output value (nil)
+do {
+  _ = try gen.build(intFamily: .unsigned, persist = true)
+catch {
+  print(error.localizedDescription)
 }
 
 ```

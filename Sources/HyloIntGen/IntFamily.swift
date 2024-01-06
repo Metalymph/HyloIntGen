@@ -1,4 +1,4 @@
-internal enum IntFamily: String {
+public enum IntFamily: String {
   case all
   case signed
   case unsigned
